@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals - AI Productivity Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+<aside class="sidebar">
+
+    <div class="dash-logo">
+        <span>✦</span> AI Productivity
+    </div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <nav>
+
+        <a href="dashboard.html">
+            🏠 <span>Dashboard</span>
+        </a>
+
+        <a href="tasks.html">
+            📋 <span>My Tasks</span>
+        </a>
+
+        <a href="calendar.html">
+            📅 <span>Calendar</span>
+        </a>
+
+        <a href="notes.html">
+            📝 <span>Notes</span>
+        </a>
+
+        <a href="goals.html" class="active">
+            🎯 <span>Goals</span>
+        </a>
+
+        <a href="ai-assistant.html">
+            🤖 <span>AI Assistant</span>
+        </a>
+
+        <a href="analytics.html">
+            📊 <span>Analytics</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <a href="settings.html">
+            ⚙️ <span>Settings</span>
+        </a>
+
+        <a href="index.html" class="logout">
+            🚪 <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="dashboard-main">
+
+    <header class="dashboard-header">
+
+        <div>
+            <p class="small-text">Goal Tracking 🎯</p>
+            <h1>My Goals</h1>
+        </div>
+
+        <button onclick="openGoalForm()">＋ Add Goal</button>
+
+    </header>
+
+
+    <section class="task-section">
+
+        <div id="goalsList"></div>
+
+    </section>
+
+</main>
+
+
+<!-- Add Goal Popup -->
+
+<div class="task-modal" id="goalModal">
+
+    <div class="task-form">
+
+        <div class="form-top">
+
+            <div>
+                <p class="small-text">Achieve your targets ✨</p>
+                <h2>Create New Goal</h2>
+            </div>
+
+            <button class="close-btn" onclick="closeGoalForm()">×</button>
+
+        </div>
+
+
+        <label>Goal Name</label>
+
+        <input
+            type="text"
+            id="goalName"
+            placeholder="What do you want to achieve?"
+        >
+
+
+        <div class="form-buttons">
+
+            <button class="cancel-btn" onclick="closeGoalForm()">
+                Cancel
+            </button>
+
+            <button class="save-btn" onclick="saveGoal()">
+                ✓ Add Goal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let goals = [];
+
+
+function getUserId() {
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    return user ? user.id : 1;
+}
+
+
+async function loadGoals() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/goals?user_id=" + getUserId()
+        );
+
+        goals = await response.json();
+
+        showGoals();
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+        console.log(error);
+
+    }
+
+}
+
+
+function showGoals() {
+
+    let goalsList = document.getElementById("goalsList");
+
+    goalsList.innerHTML = "";
+
+
+    if (goals.length === 0) {
+
+        goalsList.innerHTML =
+            "<p>No goals available. Click ＋ Add Goal to create one.</p>";
+
+        return;
+
+    }
+
+
+    goals.forEach(function(goal, index) {
+
+        let card = document.createElement("div");
+
+        card.className = "task-card";
+
+
+        card.innerHTML = `
+            <div>
+
+                <h3>🎯 ${goal.name}</h3>
+
+                <p>Progress: ${goal.progress}%</p>
+
+                <div class="goal-progress-box">
+
+    <button onclick="changeProgress(${index}, -10)">−</button>
+
+    <div class="progress-ring"
+         style="--progress:${goal.progress * 3.6}deg;">
+        <span>${goal.progress}%</span>
+    </div>
+
+    <button onclick="changeProgress(${index}, 10)">+</button>
+
+</div>
+            </div>
+
+            <button onclick="deleteGoal(${index})">
+                🗑️
+            </button>
+        `;
+
+
+        goalsList.appendChild(card);
+
+    });
+
+}
+
+
+/* Open Popup */
+
+function openGoalForm() {
+
+    document.getElementById("goalModal").style.display = "flex";
+
+}
+
+
+/* Close Popup */
+
+function closeGoalForm() {
+
+    document.getElementById("goalModal").style.display = "none";
+
+}
+
+
+/* Save Goal */
+
+async function saveGoal() {
+
+    let name = document.getElementById("goalName").value.trim();
+
+
+    if (!name) {
+
+        alert("Please enter goal name.");
+
+        return;
+
+    }
+
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/goals",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    user_id: getUserId(),
+                    name: name,
+                    progress: 0
+                })
+            }
+        );
+
+
+        let result = await response.json();
+
+
+        if (response.ok) {
+
+            closeGoalForm();
+
+            document.getElementById("goalName").value = "";
+
+            loadGoals();
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+    }
+
+}
+
+async function changeProgress(index, amount) {
+
+    let goal = goals[index];
+
+    let newProgress = Number(goal.progress) + amount;
+
+    newProgress = Math.max(0, Math.min(100, newProgress));
+
+    updateGoal(index, newProgress);
+}
+async function changeProgress(index, amount) {
+
+    let goal = goals[index];
+
+    let newProgress = Number(goal.progress) + amount;
+
+    newProgress = Math.max(0, Math.min(100, newProgress));
+
+    updateGoal(index, newProgress);
+}
+/* Update Progress */
+
+async function updateGoal(index, progress) {
+
+    let goal = goals[index];
+
+
+    try {
+
+        await fetch(
+            "http://127.0.0.1:5000/api/goals/" + goal.id,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    progress: Number(progress)
+                })
+            }
+        );
+
+        loadGoals();
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+    }
+
+}
+
+
+/* Delete Goal */
+
+async function deleteGoal(index) {
+
+    let goal = goals[index];
+
+
+    try {
+
+        await fetch(
+            "http://127.0.0.1:5000/api/goals/" + goal.id,
+            {
+                method: "DELETE"
+            }
+        );
+
+        loadGoals();
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+    }
+
+}
+
+
+loadGoals();
+
+</script>
+
+</body>
+</html>

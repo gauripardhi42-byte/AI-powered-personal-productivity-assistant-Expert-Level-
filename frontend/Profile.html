@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile - AI Productivity Assistant</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* PROFILE PAGE */
+
+.profile-container {
+    max-width: 1000px;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 22px;
+    padding: 30px;
+    border: 1px solid #eeeef5;
+    box-shadow: 0 12px 35px rgba(40, 30, 90, 0.08);
+}
+
+/* PROFILE HEADER */
+
+.profile-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 28px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #f5f2ff, #faf9ff);
+    border: 1px solid #ebe8ff;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 92px;
+    height: 92px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6c63ff, #928aff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgba(108,99,255,.28);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h2 {
+    font-size: 27px;
+    margin: 0 0 7px;
+}
+
+.profile-info p {
+    color: #77758a;
+    margin: 0;
+}
+
+.profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #e9e6ff;
+    color: #6358e8;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-tag {
+    position: absolute;
+    right: 22px;
+    top: 22px;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: white;
+    color: #6c63ff;
+    font-size: 11px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(40,30,90,.07);
+}
+
+/* SECTIONS */
+
+.profile-section {
+    margin-top: 28px;
+}
+
+.profile-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.profile-section-title span {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: #f1efff;
+    font-size: 18px;
+}
+
+.profile-section-title h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.profile-section-title p {
+    margin: 3px 0 0;
+    color: #88859a;
+    font-size: 12px;
+}
+
+/* FORM */
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.profile-field {
+    background: #fafaff;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid #eeeef7;
+}
+
+.profile-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666477;
+    margin-bottom: 8px;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd9f2;
+    border-radius: 10px;
+    background: white;
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-field input:focus {
+    outline: none;
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108,99,255,.08);
+}
+
+/* SAVE BUTTON */
+
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+.save-profile {
+    background: linear-gradient(135deg, #6c63ff, #8178ff);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 11px;
+    box-shadow: 0 7px 18px rgba(108,99,255,.22);
+}
+
+.save-profile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(108,99,255,.28);
+}
+
+/* STATS */
+
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.profile-stat {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #faf9ff, #f4f2ff);
+    border: 1px solid #ebe8ff;
+    text-align: center;
+    transition: .25s;
+}
+
+.profile-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(40,30,90,.08);
+}
+
+.profile-stat span {
+    width: 45px;
+    height: 45px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: white;
+    font-size: 21px;
+    box-shadow: 0 4px 12px rgba(40,30,90,.06);
+}
+
+.profile-stat h3 {
+    margin: 12px 0 4px;
+    color: #6c63ff;
+    font-size: 25px;
+}
+
+.profile-stat p {
+    margin: 0;
+    color: #77758a;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* PRODUCTIVITY */
+
+.productivity-box {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: #fafaff;
+    border: 1px solid #eeeef7;
+}
+
+.productivity-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.productivity-head b {
+    font-size: 13px;
+}
+
+.productivity-head span {
+    color: #6c63ff;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.profile-progress {
+    width: 100%;
+    height: 9px;
+    background: #e9e8f2;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.profile-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #6c63ff, #928aff);
+    border-radius: 20px;
+    transition: width .5s ease;
+}
+
+/* SUCCESS TOAST */
+
+.profile-toast {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: white;
+    border: 1px solid #e8e5ff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(40,30,90,.15);
+    transform: translateX(130%);
+    opacity: 0;
+    transition: .35s ease;
+    z-index: 2000;
+}
+
+.profile-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.profile-toast-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #6c63ff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.profile-toast strong {
+    display: block;
+    font-size: 14px;
+    color: #333;
+}
+
+.profile-toast small {
+    display: block;
+    margin-top: 3px;
+    color: #888;
+    font-size: 11px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-top {
+        text-align: center;
+        flex-direction: column;
+    }
+
+    .profile-tag {
+        position: static;
+    }
+
+    .profile-card {
+        padding: 20px;
+    }
+
+    .profile-toast {
+        left: 20px;
+        right: 20px;
+        top: 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+
+<div class="dash-logo">
+    <span>✦</span> AI Productivity
+</div>
+
+<div class="menu-title">MAIN MENU</div>
+
+<nav>
+
+    <a href="dashboard.html">
+        🏠 <span>Dashboard</span>
+    </a>
+
+    <a href="tasks.html">
+        📋 <span>My Tasks</span>
+    </a>
+
+    <a href="calendar.html">
+        📅 <span>Calendar</span>
+    </a>
+
+    <a href="notes.html">
+        📝 <span>Notes</span>
+    </a>
+
+    <a href="goals.html">
+        🎯 <span>Goals</span>
+    </a>
+
+    <a href="ai-assistant.html">
+        🤖 <span>AI Assistant</span>
+    </a>
+
+    <a href="analytics.html">
+        📊 <span>Analytics</span>
+    </a>
+
+</nav>
+
+
+<div class="sidebar-bottom">
+
+    <div class="menu-title">ACCOUNT</div>
+
+    <a href="settings.html">
+        ⚙️ <span>Settings</span>
+    </a>
+
+    <a href="index.html" class="logout">
+        🚪 <span>Logout</span>
+    </a>
+
+</div>
+
+
+</aside>
+
+<!-- MAIN CONTENT -->
+
+<main class="dashboard-main">
+
+
+<header class="dashboard-header">
+
+    <div>
+
+        <p class="small-text">
+            Manage Your Account 👤
+        </p>
+
+        <h1>My Profile</h1>
+
+    </div>
+
+</header>
+
+
+<div class="profile-container">
+
+
+    <div class="profile-card">
+
+
+        <!-- PROFILE HEADER -->
+
+        <div class="profile-top">
+
+            <div
+                class="profile-avatar"
+                id="profileAvatar">
+
+                U
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <h2 id="profileName">
+                    User
+                </h2>
+
+                <p id="profileEmail">
+                    Email
+                </p>
+
+                <span class="profile-badge">
+                    ✦ Active User
+                </span>
+
+            </div>
+
+
+            <div class="profile-tag">
+                AI Productivity Member
+            </div>
+
+        </div>
+
+
+        <!-- PERSONAL INFORMATION -->
+
+        <div class="profile-section">
+
+            <div class="profile-section-title">
+
+                <span>👤</span>
+
+                <div>
+
+                    <h3>Personal Information</h3>
+
+                    <p>
+                        Update your profile details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-grid">
+
+
+                <div class="profile-field">
+
+                    <label>FULL NAME</label>
+
+                    <input
+                        type="text"
+                        id="nameInput"
+                        placeholder="Enter your name">
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label>EMAIL ADDRESS</label>
+
+                    <input
+                        type="email"
+                        id="emailInput"
+                        disabled>
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label>COURSE</label>
+
+                    <input
+                        type="text"
+                        id="courseInput"
+                        value="TY BSc Computer Science">
+
+                </div>
+
+
+                <div class="profile-field">
+
+                    <label>COLLEGE</label>
+
+                    <input
+                        type="text"
+                        id="collegeInput"
+                        value="Asmita College">
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-actions">
+
+                <button
+                    class="save-profile"
+                    onclick="saveProfile()">
+
+                    💾 Save Changes
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTIVITY -->
+
+        <div class="profile-section">
+
+            <div class="profile-section-title">
+
+                <span>📊</span>
+
+                <div>
+
+                    <h3>Productivity Overview</h3>
+
+                    <p>
+                        Your current productivity performance
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-stats">
+
+
+                <div class="profile-stat">
+
+                    <span>📋</span>
+
+                    <h3 id="taskCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Tasks
+                    </p>
+
+                </div>
+
+
+                <div class="profile-stat">
+
+                    <span>🎯</span>
+
+                    <h3 id="goalCount">
+                        0
+                    </h3>
+
+                    <p>
+                        Total Goals
+                    </p>
+
+                </div>
+
+
+                <div class="profile-stat">
+
+                    <span>⚡</span>
+
+                    <h3 id="productivity">
+                        0%
+                    </h3>
+
+                    <p>
+                        Productivity Score
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="productivity-box">
+
+                <div class="productivity-head">
+
+                    <b>
+                        Overall Productivity
+                    </b>
+
+                    <span id="productivityText">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="profile-progress">
+
+                    <div
+                        class="profile-progress-fill"
+                        id="profileProgress">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</main>
+
+<!-- SUCCESS MESSAGE -->
+
+<div
+    id="profileToast"
+    class="profile-toast">
+
+
+<span class="profile-toast-icon">
+    ✓
+</span>
+
+<div>
+
+    <strong>
+        Profile Updated
+    </strong>
+
+    <small>
+        Your changes have been saved successfully.
+    </small>
+
+</div>
+
+
+</div>
+
+<script>
+
+
+/* LOAD USER */
+
+let user = JSON.parse(
+    localStorage.getItem("user")
+);
+
+
+if (!user) {
+
+    window.location.href = "login.html";
+
+}
+
+
+if (user) {
+
+    document.getElementById("profileName")
+        .innerText = user.name || "User";
+
+
+    document.getElementById("profileEmail")
+        .innerText = user.email || "Email";
+
+
+    document.getElementById("nameInput")
+        .value = user.name || "";
+
+
+    document.getElementById("emailInput")
+        .value = user.email || "";
+
+
+    document.getElementById("courseInput")
+        .value =
+        localStorage.getItem("course")
+        || "TY BSc Computer Science";
+
+
+    document.getElementById("collegeInput")
+        .value =
+        localStorage.getItem("college")
+        || "Asmita College";
+
+
+    setInitials(user.name);
+
+}
+
+
+/* INITIALS */
+
+function setInitials(name) {
+
+    let parts =
+        (name || "User")
+        .trim()
+        .split(" ");
+
+
+    let initials =
+        parts[0].charAt(0).toUpperCase();
+
+
+    if (parts.length > 1) {
+
+        initials +=
+            parts[parts.length - 1]
+            .charAt(0)
+            .toUpperCase();
+
+    }
+
+
+    document.getElementById("profileAvatar")
+        .innerText = initials;
+
+}
+
+
+/* SAVE PROFILE */
+
+function saveProfile() {
+
+    let newName =
+        document.getElementById("nameInput")
+        .value.trim();
+
+
+    let course =
+        document.getElementById("courseInput")
+        .value.trim();
+
+
+    let college =
+        document.getElementById("collegeInput")
+        .value.trim();
+
+
+    if (!newName || !course || !college) {
+
+        return;
+
+    }
+
+
+    user.name = newName;
+
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
+
+
+    localStorage.setItem(
+        "course",
+        course
+    );
+
+
+    localStorage.setItem(
+        "college",
+        college
+    );
+
+
+    document.getElementById("profileName")
+        .innerText = newName;
+
+
+    setInitials(newName);
+
+
+    showProfileToast();
+
+}
+
+
+/* SUCCESS TOAST */
+
+function showProfileToast() {
+
+    let toast =
+        document.getElementById("profileToast");
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(function() {
+
+        toast.classList.remove("show");
+
+    }, 2500);
+
+}
+
+
+/* LOAD PRODUCTIVITY */
+
+async function loadStats() {
+
+    if (!user) return;
+
+
+    try {
+
+        let taskResponse =
+            await fetch(
+                "http://127.0.0.1:5000/api/tasks?user_id="
+                + user.id
+            );
+
+
+        let tasks =
+            await taskResponse.json();
+
+
+        let goalResponse =
+            await fetch(
+                "http://127.0.0.1:5000/api/goals?user_id="
+                + user.id
+            );
+
+
+        let goals =
+            await goalResponse.json();
+
+
+        let totalTasks =
+            tasks.length;
+
+
+        let completedTasks =
+            tasks.filter(function(task) {
+
+                return Number(task.completed) === 1;
+
+            }).length;
+
+
+        let score =
+            totalTasks > 0
+                ? Math.round(
+                    (completedTasks / totalTasks) * 100
+                )
+                : 0;
+
+
+        document.getElementById("taskCount")
+            .innerText = totalTasks;
+
+
+        document.getElementById("goalCount")
+            .innerText = goals.length;
+
+
+        document.getElementById("productivity")
+            .innerText = score + "%";
+
+
+        document.getElementById("productivityText")
+            .innerText = score + "%";
+
+
+        document.getElementById("profileProgress")
+            .style.width = score + "%";
+
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+
+loadStats();
+
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | AI Productivity</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body.auth-page {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at bottom right, #7c6cff, transparent 35%),
+                linear-gradient(135deg, #151329, #28224d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .auth-wrapper {
+            width: 900px;
+            min-height: 590px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+        }
+
+        /* LEFT SIDE */
+
+        .auth-info {
+            padding: 50px 45px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(
+                145deg,
+                rgba(108,99,255,0.35),
+                rgba(80,70,180,0.08)
+            );
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .brand span {
+            color: #b8b1ff;
+        }
+
+        .ai-circle {
+            width: 82px;
+            height: 82px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#8f87ff,#6258e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 30px rgba(108,99,255,0.45);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .auth-info h2 {
+            font-size: 32px;
+            line-height: 1.15;
+            margin: 0 0 16px;
+        }
+
+        .auth-info p {
+            color: #d6d3ed;
+            line-height: 1.7;
+            max-width: 330px;
+        }
+
+        .feature {
+            margin-top: 20px;
+            color: #eee;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        /* RIGHT SIDE */
+
+        .auth-box {
+            background: rgba(255,255,255,0.96);
+            padding: 38px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-box h1 {
+            margin: 0 0 7px;
+            font-size: 29px;
+            color: #222;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 13px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box .input-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px 42px;
+            border: 1px solid #ddd;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .input-box input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.10);
+        }
+
+        .show-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .register-btn {
+            width: 100%;
+            border: none;
+            padding: 13px;
+            border-radius: 11px;
+            background: linear-gradient(135deg,#766cff,#5c52df);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 7px;
+            box-shadow: 0 8px 20px rgba(108,99,255,0.25);
+            transition: 0.25s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108,99,255,0.35);
+        }
+
+        .auth-bottom {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-top: 18px;
+        }
+
+        .auth-bottom a {
+            color: #6359e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-home {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+
+        .error-message {
+            color: #e53935;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        /* SUCCESS POPUP */
+
+        .success-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,8,25,0.65);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .success-box {
+            background: white;
+            width: 360px;
+            padding: 32px;
+            border-radius: 22px;
+            text-align: center;
+            animation: popIn 0.4s ease;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+
+        .success-icon {
+            width: 68px;
+            height: 68px;
+            margin: auto;
+            border-radius: 50%;
+            background: #e9fff1;
+            color: #20a957;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .success-box h2 {
+            margin: 18px 0 8px;
+        }
+
+        .success-box p {
+            color: #777;
+            margin: 5px;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-9px);
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            .auth-wrapper {
+                width: 92%;
+                grid-template-columns: 1fr;
+            }
+
+            .auth-info {
+                display: none;
+            }
+
+            .auth-box {
+                padding: 35px 28px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body class="auth-page">
+
+    <div class="auth-wrapper">
+
+        <!-- LEFT AI SECTION -->
+
+        <div class="auth-info">
+
+            <div class="brand">
+                ✦ AI <span>Productivity</span>
+            </div>
+
+            <div class="ai-circle">
+                ✨
+            </div>
+
+            <h2>
+                Build better habits.<br>
+                Reach your goals.
+            </h2>
+
+            <p>
+                Create your personal productivity space and
+                manage your tasks, goals, notes and schedule
+                smarter with AI.
+            </p>
+
+            <div class="feature">
+                ✓ Personalized Dashboard<br>
+                ✓ Smart Task Management<br>
+                ✓ AI Productivity Insights<br>
+                ✓ Goal Progress Tracking
+            </div>
+
+        </div>
+
+
+        <!-- REGISTER SECTION -->
+
+        <div class="auth-box">
+
+            <h1>Create Your Account 🚀</h1>
+
+            <p class="subtitle">
+                Start your smarter productivity journey today.
+            </p>
+
+
+            <form onsubmit="registerUser(event)">
+
+                <div class="form-group">
+
+                    <label>Full Name</label>
+
+                    <div class="input-box">
+
+                        <span class="input-icon">👤</span>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Email Address</label>
+
+                    <div class="input-box">
+
+                        <span class="input-icon">✉️</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Password</label>
+
+                    <div class="input-box">
+
+                        <span class="input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Create a password"
+                            required
+                        >
+
+                        <span
+                            class="show-password"
+                            onclick="togglePassword('password')">
+                            👁️
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Confirm Password</label>
+
+                    <div class="input-box">
+
+                        <span class="input-icon">🔐</span>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm your password"
+                            required
+                        >
+
+                        <span
+                            class="show-password"
+                            onclick="togglePassword('confirmPassword')">
+                            👁️
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="register-btn">
+                    Create Account →
+                </button>
+
+            </form>
+
+
+            <p id="errorMessage" class="error-message"></p>
+
+
+            <p class="auth-bottom">
+
+                Already have an account?
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </p>
+
+
+            <a href="index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS POPUP -->
+
+    <div class="success-popup" id="successPopup">
+
+        <div class="success-box">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>
+                Account Created! 🎉
+            </h2>
+
+            <p>
+                Your registration was successful.
+            </p>
+
+            <p>
+                Welcome to AI Productivity Assistant!
+            </p>
+
+            <p>
+                Redirecting to Login...
+            </p>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+function togglePassword(id) {
+
+    let password =
+        document.getElementById(id);
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+    } else {
+
+        password.type = "password";
+
+    }
+
+}
+
+
+async function registerUser(event) {
+
+    event.preventDefault();
+
+    let name =
+        document.getElementById("name").value;
+
+    let email =
+        document.getElementById("email").value;
+
+    let password =
+        document.getElementById("password").value;
+
+    let confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    let errorMessage =
+        document.getElementById("errorMessage");
+
+    errorMessage.innerText = "";
+
+
+    if (password !== confirmPassword) {
+
+        errorMessage.innerText =
+            "Passwords do not match!";
+
+        return;
+    }
+
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/register",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            }
+        );
+
+
+        let result =
+            await response.json();
+
+
+        if (response.ok) {
+
+            document.getElementById(
+                "successPopup"
+            ).style.display = "flex";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "login.html";
+
+            }, 2000);
+
+
+        } else {
+
+            errorMessage.innerText =
+                result.message ||
+                "Registration failed.";
+
+        }
+
+
+    } catch (error) {
+
+        errorMessage.innerText =
+            "Backend connection failed!";
+
+        console.log(error);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

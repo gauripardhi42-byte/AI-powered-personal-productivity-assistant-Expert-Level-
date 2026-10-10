@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | AI Productivity</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body.auth-page {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, #7c6cff, transparent 35%),
+                linear-gradient(135deg, #151329, #28224d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .auth-wrapper {
+            width: 900px;
+            min-height: 560px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+        }
+
+        /* LEFT SIDE */
+
+        .auth-info {
+            padding: 55px 45px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(
+                145deg,
+                rgba(108,99,255,0.35),
+                rgba(80,70,180,0.08)
+            );
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .brand span {
+            color: #b8b1ff;
+        }
+
+        .ai-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg,#8f87ff,#6258e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(108,99,255,0.45);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .auth-info h2 {
+            font-size: 34px;
+            line-height: 1.15;
+            margin: 0 0 18px;
+        }
+
+        .auth-info p {
+            color: #d6d3ed;
+            line-height: 1.7;
+            max-width: 330px;
+        }
+
+        .feature {
+            margin-top: 25px;
+            color: #eee;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        /* RIGHT SIDE */
+
+        .auth-box {
+            background: rgba(255,255,255,0.96);
+            padding: 48px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-box h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #222;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        .input-box {
+            position: relative;
+        }
+
+        .input-box span {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 13px 42px;
+            border: 1px solid #ddd;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .input-box input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108,99,255,0.10);
+        }
+
+        .show-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 11px;
+            background: linear-gradient(135deg,#766cff,#5c52df);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            box-shadow: 0 8px 20px rgba(108,99,255,0.25);
+            transition: 0.25s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108,99,255,0.35);
+        }
+
+        .auth-bottom {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            margin-top: 22px;
+        }
+
+        .auth-bottom a {
+            color: #6359e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .back-home {
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .error-message {
+            color: #e53935;
+            text-align: center;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* SUCCESS POPUP */
+
+        .success-popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10,8,25,0.65);
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .success-box {
+            background: white;
+            width: 350px;
+            padding: 32px;
+            border-radius: 22px;
+            text-align: center;
+            animation: popIn 0.4s ease;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+
+        .success-icon {
+            width: 68px;
+            height: 68px;
+            margin: auto;
+            border-radius: 50%;
+            background: #e9fff1;
+            color: #20a957;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .success-box h2 {
+            margin: 18px 0 8px;
+        }
+
+        .success-box p {
+            color: #777;
+            margin: 5px;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            .auth-wrapper {
+                width: 92%;
+                grid-template-columns: 1fr;
+            }
+
+            .auth-info {
+                display: none;
+            }
+
+            .auth-box {
+                padding: 40px 28px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body class="auth-page">
+
+    <div class="auth-wrapper">
+
+        <!-- LEFT AI SECTION -->
+
+        <div class="auth-info">
+
+            <div class="brand">
+                ✦ AI <span>Productivity</span>
+            </div>
+
+            <div class="ai-circle">
+                🤖
+            </div>
+
+            <h2>
+                Work smarter.<br>
+                Achieve more.
+            </h2>
+
+            <p>
+                Your intelligent personal productivity assistant
+                designed to organize tasks, goals, notes and your
+                daily schedule.
+            </p>
+
+            <div class="feature">
+                ✓ Smart Task Management<br>
+                ✓ AI Productivity Suggestions<br>
+                ✓ Goal & Progress Tracking<br>
+                ✓ Personal Dashboard
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN SECTION -->
+
+        <div class="auth-box">
+
+            <h1>Welcome Back 👋</h1>
+
+            <p class="subtitle">
+                Sign in to continue your productivity journey.
+            </p>
+
+
+            <form onsubmit="loginUser(event)">
+
+                <div class="form-group">
+
+                    <label>Email Address</label>
+
+                    <div class="input-box">
+
+                        <span>✉️</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Password</label>
+
+                    <div class="input-box">
+
+                        <span>🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <span
+                            class="show-password"
+                            onclick="togglePassword()">
+                            👁️
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit" class="login-btn">
+                    Login to Dashboard →
+                </button>
+
+            </form>
+
+
+            <p id="errorMessage" class="error-message"></p>
+
+
+            <p class="auth-bottom">
+
+                Don't have an account?
+
+                <a href="register.html">
+                    Create Account
+                </a>
+
+            </p>
+
+
+            <a href="index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS POPUP -->
+
+    <div class="success-popup" id="successPopup">
+
+        <div class="success-box">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>
+                Welcome Back! 🎉
+            </h2>
+
+            <p>
+                Login successful.
+            </p>
+
+            <p>
+                Taking you to your dashboard...
+            </p>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+function togglePassword() {
+
+    let password =
+        document.getElementById("password");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+    } else {
+
+        password.type = "password";
+
+    }
+
+}
+
+
+async function loginUser(event) {
+
+    event.preventDefault();
+
+    let email =
+        document.getElementById("email").value;
+
+    let password =
+        document.getElementById("password").value;
+
+    let errorMessage =
+        document.getElementById("errorMessage");
+
+    errorMessage.innerText = "";
+
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }
+        );
+
+
+        let result =
+            await response.json();
+
+
+        if (response.ok) {
+
+            localStorage.setItem(
+                "loggedIn",
+                "true"
+            );
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(result.user)
+            );
+
+
+            document.getElementById(
+                "successPopup"
+            ).style.display = "flex";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 2000);
+
+
+        } else {
+
+            errorMessage.innerText =
+                result.message ||
+                "Invalid email or password.";
+
+        }
+
+
+    } catch (error) {
+
+        errorMessage.innerText =
+            "Backend connection failed!";
+
+        console.log(error);
+
+    }
+
+}
+
+
+function logout() {
+
+    localStorage.removeItem("loggedIn");
+
+    localStorage.removeItem("user");
+
+    window.location.href = "index.html";
+
+}
+
+</script>
+
+</body>
+</html>

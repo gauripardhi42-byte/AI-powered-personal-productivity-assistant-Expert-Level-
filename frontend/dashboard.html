@@ -1,0 +1,1963 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - AI Productivity Assistant</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard-page{
+    background:#f5f7ff;
+    color:#20233d;
+}
+
+.dashboard-main{
+    margin-left:240px;
+    width:calc(100% - 240px);
+    min-height:100vh;
+    padding:18px 24px 35px;
+}
+
+/* ================================
+   TOP BAR
+================================ */
+
+.topbar{
+    height:48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:14px;
+}
+
+.search-wrapper{
+    position:relative;
+}
+
+.search-box{
+    width:460px;
+    height:40px;
+    background:white;
+    border:1px solid #edf0fa;
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    padding:0 16px;
+    box-shadow:0 3px 15px rgba(50,60,120,.04);
+}
+
+.search-box span{
+    font-size:19px;
+    color:#a3a8bd;
+    margin-right:10px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:13px;
+    color:#444;
+}
+
+.search-box input:focus{
+    border:none;
+    box-shadow:none;
+}
+
+/* SMART SEARCH RESULTS */
+
+.search-results{
+    display:none;
+    position:absolute;
+    top:47px;
+    left:0;
+    width:460px;
+    background:white;
+    border:1px solid #e8eaf3;
+    border-radius:14px;
+    box-shadow:0 12px 30px rgba(40,45,90,.15);
+    z-index:99999;
+    overflow:hidden;
+}
+
+.search-results.show{
+    display:block;
+}
+
+.search-result{
+    padding:12px 15px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-bottom:1px solid #f0f1f6;
+    cursor:pointer;
+}
+
+.search-result:hover{
+    background:#f6f5ff;
+}
+
+.search-result-icon{
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    background:#eeecff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.search-result-info strong{
+    display:block;
+    font-size:12px;
+    color:#292c45;
+}
+
+.search-result-info small{
+    color:#858ba0;
+    font-size:10px;
+}
+
+.search-empty{
+    padding:18px;
+    text-align:center;
+    color:#858ba0;
+    font-size:12px;
+}
+
+/* ================================
+   TOP RIGHT
+================================ */
+
+.top-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.notification{
+    position:relative;
+    font-size:21px;
+    cursor:pointer;
+}
+
+.notification-dot{
+    position:absolute;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#ff5470;
+    top:0;
+    right:0;
+    border:2px solid #f5f7ff;
+}
+
+.notification-panel{
+    display:none;
+    position:absolute;
+    top:34px;
+    right:-10px;
+    width:320px;
+    background:white;
+    border:1px solid #e8eaf3;
+    border-radius:14px;
+    box-shadow:0 12px 35px rgba(40,45,90,.15);
+    z-index:9999;
+    overflow:hidden;
+}
+
+.notification-panel.show{
+    display:block;
+}
+
+.notification-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 16px;
+    border-bottom:1px solid #edf0f6;
+    color:#20233d;
+    font-size:14px;
+}
+
+.notification-item{
+    display:flex;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid #f0f1f6;
+}
+
+.notification-item:hover{
+    background:#f7f6ff;
+}
+
+.notification-item:last-child{
+    border-bottom:none;
+}
+
+.notification-icon{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:#f0efff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.notification-item strong{
+    display:block;
+    font-size:12px;
+    color:#292c45;
+    margin-bottom:4px;
+}
+
+.notification-item p{
+    margin:0;
+    color:#7d8298;
+    font-size:11px;
+    line-height:1.4;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.user-box a{
+    text-decoration:none;
+    color:#292b43;
+}
+
+.user-avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#6358df;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    box-shadow:0 5px 15px rgba(99,88,223,.25);
+}
+
+.user-name{
+    font-size:14px;
+    font-weight:700;
+}
+
+.user-arrow{
+    color:#777c95;
+    font-size:12px;
+}
+
+/* ================================
+   WELCOME BANNER
+================================ */
+
+.welcome-banner{
+    height:158px;
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+    background:
+        linear-gradient(
+            100deg,
+            #f0f4ff 0%,
+            #f4f1ff 52%,
+            #fff3ec 100%
+        );
+    border:1px solid #e7eaf5;
+    margin-bottom:20px;
+    padding:25px 22px;
+}
+
+.welcome-content{
+    position:relative;
+    z-index:5;
+}
+
+.welcome-label{
+    color:#626b83;
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.welcome-title{
+    font-size:28px;
+    margin:0;
+    color:#111936;
+    font-weight:800;
+}
+
+.welcome-title span{
+    color:#756ae5;
+}
+
+.welcome-subtitle{
+    margin:9px 0 0;
+    color:#777d95;
+    font-size:13px;
+}
+
+/* Banner decoration */
+
+.banner-circle{
+    position:absolute;
+    border-radius:50%;
+}
+
+.banner-circle.one{
+    width:210px;
+    height:210px;
+    right:300px;
+    top:-80px;
+    background:#ebe9ff;
+}
+
+.banner-circle.two{
+    width:120px;
+    height:120px;
+    right:120px;
+    bottom:-55px;
+    background:#ffece2;
+}
+
+.banner-leaf{
+    position:absolute;
+    width:22px;
+    height:42px;
+    border-radius:100% 0 100% 0;
+    background:#78a78b;
+    transform:rotate(-35deg);
+}
+
+.leaf-one{
+    right:25px;
+    top:27px;
+}
+
+.leaf-two{
+    right:48px;
+    top:58px;
+    transform:rotate(25deg);
+    background:#9ab99a;
+}
+
+.leaf-three{
+    right:68px;
+    top:28px;
+    transform:rotate(-60deg);
+    background:#628e77;
+}
+
+/* Illustration */
+
+.illustration{
+    position:absolute;
+    right:185px;
+    bottom:0;
+    width:250px;
+    height:155px;
+}
+
+.ill-body{
+    position:absolute;
+    width:68px;
+    height:83px;
+    background:#6c61c9;
+    border-radius:35px 35px 10px 10px;
+    right:78px;
+    bottom:0;
+}
+
+.ill-head{
+    position:absolute;
+    width:47px;
+    height:47px;
+    border-radius:50%;
+    background:#f0b18f;
+    right:88px;
+    bottom:77px;
+    z-index:3;
+}
+
+.ill-hair{
+    position:absolute;
+    width:57px;
+    height:55px;
+    border-radius:50% 50% 35% 35%;
+    background:#25243b;
+    right:83px;
+    bottom:95px;
+    z-index:4;
+}
+
+.ill-hair::after{
+    content:"";
+    position:absolute;
+    width:30px;
+    height:48px;
+    right:-7px;
+    top:25px;
+    background:#25243b;
+    border-radius:50%;
+}
+
+.ill-arm{
+    position:absolute;
+    width:15px;
+    height:67px;
+    background:#f0b18f;
+    border-radius:15px;
+    right:68px;
+    bottom:23px;
+    transform:rotate(-25deg);
+}
+
+.ill-laptop{
+    position:absolute;
+    width:83px;
+    height:53px;
+    background:#343654;
+    border:4px solid #4e527c;
+    border-radius:5px;
+    right:20px;
+    bottom:31px;
+    transform:rotate(-8deg);
+    z-index:5;
+}
+
+.ill-laptop::after{
+    content:"";
+    position:absolute;
+    width:102px;
+    height:7px;
+    background:#525783;
+    bottom:-10px;
+    left:-12px;
+    border-radius:10px;
+}
+
+/* Plant */
+
+.plant{
+    position:absolute;
+    left:20px;
+    bottom:8px;
+    width:50px;
+    height:75px;
+}
+
+.plant-stem{
+    width:4px;
+    height:55px;
+    background:#688d71;
+    position:absolute;
+    left:24px;
+    bottom:0;
+}
+
+.plant-leaf{
+    position:absolute;
+    width:24px;
+    height:38px;
+    border-radius:100% 0 100% 0;
+    background:#76a482;
+}
+
+.plant-leaf.a{
+    left:5px;
+    top:10px;
+    transform:rotate(-45deg);
+}
+
+.plant-leaf.b{
+    right:2px;
+    top:25px;
+    transform:rotate(45deg);
+}
+
+.plant-leaf.c{
+    left:12px;
+    top:35px;
+    transform:rotate(-55deg);
+}
+
+.plant-pot{
+    position:absolute;
+    width:42px;
+    height:25px;
+    background:#d59d73;
+    bottom:-3px;
+    left:4px;
+    border-radius:5px 5px 12px 12px;
+}
+
+.banner-note{
+    position:absolute;
+    right:65px;
+    top:35px;
+    color:#66708d;
+    font-size:21px;
+    font-weight:600;
+    line-height:1.15;
+    transform:rotate(-5deg);
+}
+
+.banner-heart{
+    color:#e98da8;
+}
+
+/* ================================
+   STAT CARDS
+================================ */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    position:relative;
+    overflow:hidden;
+    background:white;
+    border:1px solid #e9ebf4;
+    border-radius:16px;
+    min-height:145px;
+    padding:18px 20px;
+    box-shadow:0 5px 20px rgba(42,52,100,.04);
+    transition:.25s;
+}
+
+.stat-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(42,52,100,.09);
+}
+
+.stat-icon{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.icon-purple{
+    background:#ecebff;
+    color:#685de1;
+}
+
+.icon-green{
+    background:#e3f7ef;
+    color:#3db687;
+}
+
+.icon-orange{
+    background:#fff0dc;
+    color:#e9a34d;
+}
+
+.icon-pink{
+    background:#ffe5ef;
+    color:#ed547e;
+}
+
+.stat-card p{
+    color:#7c829b;
+    font-size:12px;
+    margin:12px 0 6px;
+}
+
+.stat-card h2{
+    margin:0;
+    font-size:27px;
+    color:#121832;
+}
+
+.stat-change{
+    font-size:11px;
+    margin-top:8px;
+    color:#8a91a7;
+}
+
+.stat-change span{
+    color:#52ad86;
+    font-weight:700;
+}
+
+.stat-decoration{
+    position:absolute;
+    width:105px;
+    height:105px;
+    border-radius:50%;
+    right:-35px;
+    bottom:-55px;
+    opacity:.7;
+}
+
+.dec-purple{background:#eeeaff;}
+.dec-green{background:#e7f8f1;}
+.dec-orange{background:#fff0dd;}
+.dec-pink{background:#ffe8f0;}
+
+/* ================================
+   CONTENT GRID
+================================ */
+
+.content-grid{
+    display:grid;
+    grid-template-columns:1.75fr 1fr;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e9ebf4;
+    border-radius:16px;
+    box-shadow:0 5px 20px rgba(42,52,100,.04);
+}
+
+/* TASK PANEL */
+
+.task-panel{
+    padding:20px;
+}
+
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:14px;
+    border-bottom:1px solid #edf0f6;
+}
+
+.panel-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.panel-title-icon{
+    color:#6459df;
+    font-size:21px;
+}
+
+.panel-header h2{
+    margin:0;
+    font-size:18px;
+    color:#20243e;
+}
+
+.add-task{
+    background:#6357e5;
+    color:white;
+    border:none;
+    padding:9px 15px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.add-task:hover{
+    background:#5145cc;
+}
+
+/* Task */
+
+.dash-task{
+    display:flex;
+    align-items:center;
+    min-height:67px;
+    border-bottom:1px solid #edf0f6;
+    gap:13px;
+}
+
+.task-check{
+    width:23px;
+    height:23px;
+    border:2px solid #c7cce4;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+.task-info{
+    flex:1;
+}
+
+.task-info b{
+    display:block;
+    color:#272b43;
+    font-size:13px;
+    margin-bottom:7px;
+}
+
+.task-info small{
+    color:#7f859d;
+    font-size:10px;
+}
+
+.priority{
+    display:inline-block;
+    padding:4px 9px;
+    border-radius:10px;
+    font-size:10px;
+    margin-left:5px;
+    font-weight:600;
+}
+
+.priority.high{
+    background:#ffe5ec;
+    color:#e85579;
+}
+
+.priority.medium{
+    background:#fff0d8;
+    color:#d89535;
+}
+
+.priority.low{
+    background:#e4f7ef;
+    color:#41a77d;
+}
+
+.task-round{
+    width:22px;
+    height:22px;
+    border:1px solid #d5d9e8;
+    border-radius:50%;
+    flex-shrink:0;
+}
+
+.more-btn{
+    width:45px;
+    height:43px;
+    border:1px solid #edf0f6;
+    background:white;
+    border-radius:11px;
+    color:#9298ad;
+    font-size:17px;
+    cursor:pointer;
+}
+
+.more-btn:hover{
+    background:#f5f3ff;
+    color:#665bdd;
+}
+
+.task-footer{
+    background:#f0f2ff;
+    margin-top:10px;
+    padding:10px 14px;
+    border-radius:10px;
+    color:#777e96;
+    font-size:11px;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* AI CARD */
+
+.ai-panel{
+    padding:24px;
+    color:white;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(
+        145deg,
+        #7892ed,
+        #6882e8
+    );
+}
+
+.ai-panel::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    right:-75px;
+    bottom:-80px;
+    background:rgba(255,255,255,.08);
+}
+
+.ai-panel::after{
+    content:"✦";
+    position:absolute;
+    right:25px;
+    top:20px;
+    font-size:34px;
+    color:rgba(255,255,255,.35);
+}
+
+.ai-icon{
+    width:58px;
+    height:58px;
+    border-radius:17px;
+    background:rgba(255,255,255,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin-bottom:16px;
+}
+
+.ai-panel h2{
+    margin:0 0 12px;
+    font-size:23px;
+}
+
+.ai-panel p{
+    font-size:13px;
+    line-height:1.7;
+    color:#f1f3ff;
+    min-height:78px;
+}
+
+.ai-button{
+    background:white;
+    color:#6357d5;
+    border:none;
+    padding:13px 18px;
+    border-radius:10px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+.ai-button:hover{
+    transform:translateY(-2px);
+}
+
+/* PRODUCTIVITY */
+
+.productivity-panel{
+    padding:20px;
+}
+
+.week-btn{
+    background:white;
+    border:1px solid #e7eaf2;
+    padding:8px 14px;
+    border-radius:18px;
+    color:#697087;
+    font-size:11px;
+}
+
+.bars{
+    height:165px;
+    display:flex;
+    align-items:flex-end;
+    gap:30px;
+    padding:20px 10px 0;
+    border-bottom:1px solid #edf0f6;
+}
+
+.bars > div{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+}
+
+.bars i{
+    display:block;
+    width:40px;
+    max-width:75%;
+    min-height:7px;
+    border-radius:8px 8px 3px 3px;
+    background:linear-gradient(
+        to top,
+        #6258df,
+        #a9a1ff
+    );
+}
+
+.bars small{
+    color:#858ba0;
+    font-size:10px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .dashboard-main{
+        padding:18px;
+    }
+
+    .search-box{
+        width:350px;
+    }
+
+    .search-results{
+        width:350px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .content-grid{
+        grid-template-columns:1fr;
+    }
+
+    .illustration{
+        right:120px;
+    }
+}
+
+@media(max-width:800px){
+
+    .dashboard-main{
+        margin-left:70px;
+        width:calc(100% - 70px);
+    }
+
+    .search-box{
+        width:250px;
+    }
+
+    .search-results{
+        width:250px;
+    }
+
+    .welcome-title{
+        font-size:23px;
+    }
+
+    .banner-note{
+        display:none;
+    }
+
+    .illustration{
+        opacity:.35;
+        right:40px;
+    }
+}
+
+@media(max-width:600px){
+
+    .dashboard-main{
+        padding:14px;
+    }
+
+    .topbar{
+        height:auto;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .search-results{
+        width:100%;
+    }
+
+    .top-right{
+        gap:10px;
+    }
+
+    .user-name,
+    .user-arrow{
+        display:none;
+    }
+
+    .welcome-banner{
+        height:150px;
+    }
+
+    .welcome-title{
+        font-size:21px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .stat-card{
+        min-height:125px;
+        padding:14px;
+    }
+
+    .stat-card h2{
+        font-size:23px;
+    }
+
+    .bars{
+        gap:8px;
+    }
+
+    .bars i{
+        width:25px;
+    }
+}
+
+</style>
+</head>
+
+<body class="dashboard-page">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="dash-logo">
+        <span>✦</span> AI Productivity
+    </div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <nav>
+
+        <a href="dashboard.html" class="active">
+            🏠 <span>Dashboard</span>
+        </a>
+
+        <a href="tasks.html">
+            📋 <span>My Tasks</span>
+        </a>
+
+        <a href="calendar.html">
+            📅 <span>Calendar</span>
+        </a>
+
+        <a href="notes.html">
+            📝 <span>Notes</span>
+        </a>
+
+        <a href="goals.html">
+            🎯 <span>Goals</span>
+        </a>
+
+        <a href="ai-assistant.html">
+            🤖 <span>AI Assistant</span>
+        </a>
+
+        <a href="analytics.html">
+            📊 <span>Analytics</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-title">
+            ACCOUNT
+        </div>
+
+        <a href="settings.html">
+            ⚙️ <span>Settings</span>
+        </a>
+
+        <a href="index.html" class="logout">
+            🚪 <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="dashboard-main">
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+    <div class="search-wrapper">
+
+        <div class="search-box">
+
+            <span>⌕</span>
+
+            <input
+                type="text"
+                id="dashboardSearch"
+                placeholder="Search tasks, goals, notes..."
+                autocomplete="off"
+                oninput="searchDashboard()"
+            >
+
+        </div>
+
+        <div
+            class="search-results"
+            id="searchResults">
+        </div>
+
+    </div>
+
+    <div class="top-right">
+
+        <div class="notification" onclick="toggleNotifications()">
+
+            🔔
+
+            <span class="notification-dot"></span>
+
+            <div
+                class="notification-panel"
+                id="notificationPanel">
+
+                <div class="notification-header">
+                    <strong>Notifications</strong>
+                    <span>🔔</span>
+                </div>
+
+                <div class="notification-item">
+
+                    <span class="notification-icon">
+                        📋
+                    </span>
+
+                    <div>
+                        <strong>Task Reminder</strong>
+                        <p>
+                            You have pending tasks to complete.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="notification-item">
+
+                    <span class="notification-icon">
+                        🎯
+                    </span>
+
+                    <div>
+                        <strong>Goal Progress</strong>
+                        <p>
+                            Keep working on your goals!
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="notification-item">
+
+                    <span class="notification-icon">
+                        🤖
+                    </span>
+
+                    <div>
+                        <strong>AI Suggestion</strong>
+                        <p>
+                            Your AI assistant has a suggestion for you.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="user-box">
+
+            <a href="profile.html">
+
+                <div
+                    class="user-avatar"
+                    id="userLogo">
+                    G
+                </div>
+
+            </a>
+
+            <a href="profile.html">
+
+                <span
+                    class="user-name"
+                    id="topUserName">
+                    Gauri
+                </span>
+
+            </a>
+
+            <span class="user-arrow">
+                ⌄
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- WELCOME BANNER -->
+
+<section class="welcome-banner">
+
+    <div class="welcome-content">
+
+        <div class="welcome-label">
+            Smart Productivity 🤖
+        </div>
+
+        <h1 class="welcome-title">
+            Welcome back,
+            <span id="userName">Gauri</span> 👋
+        </h1>
+
+        <p class="welcome-subtitle">
+            Small steps make big progress!
+        </p>
+
+    </div>
+
+    <div class="illustration">
+
+        <div class="plant">
+
+            <div class="plant-stem"></div>
+
+            <div class="plant-leaf a"></div>
+            <div class="plant-leaf b"></div>
+            <div class="plant-leaf c"></div>
+
+            <div class="plant-pot"></div>
+
+        </div>
+
+        <div class="ill-body"></div>
+        <div class="ill-head"></div>
+        <div class="ill-hair"></div>
+        <div class="ill-arm"></div>
+        <div class="ill-laptop"></div>
+
+    </div>
+
+    <div class="banner-note">
+        Better<br>
+        Plans<br>
+        Brighter<br>
+        Future
+        <span class="banner-heart">♥</span>
+    </div>
+
+    <div class="banner-leaf leaf-one"></div>
+    <div class="banner-leaf leaf-two"></div>
+    <div class="banner-leaf leaf-three"></div>
+
+</section>
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-purple">
+            📋
+        </div>
+
+        <p>Total Tasks</p>
+
+        <h2 id="totalTasks">0</h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-purple"></div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-green">
+            ✓
+        </div>
+
+        <p>Completed</p>
+
+        <h2 id="completedTasks">0</h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-green"></div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-orange">
+            ⏳
+        </div>
+
+        <p>Pending</p>
+
+        <h2 id="pendingTasks">0</h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-orange"></div>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-pink">
+            ⚡
+        </div>
+
+        <p>Productivity</p>
+
+        <h2 id="productivityScore">0%</h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-pink"></div>
+
+    </div>
+
+</section>
+
+<!-- TASK + AI -->
+
+<section class="content-grid">
+
+    <div class="panel task-panel">
+
+        <div class="panel-header">
+
+            <div class="panel-title">
+
+                <span class="panel-title-icon">
+                    📋
+                </span>
+
+                <h2>
+                    Today's Tasks
+                </h2>
+
+            </div>
+
+            <button
+                class="add-task"
+                onclick="addTask()">
+
+                + Add Task
+
+            </button>
+
+        </div>
+
+        <div id="todayTasks"></div>
+
+        <div class="task-footer">
+
+            <span>
+                💡 Keep going! You're doing great!
+            </span>
+
+            <span>
+                →
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="panel ai-panel">
+
+        <div class="ai-icon">
+            🤖
+        </div>
+
+        <h2>
+            AI Suggestion
+        </h2>
+
+        <p id="aiSuggestion">
+            Loading AI suggestion...
+        </p>
+
+        <button
+            class="ai-button"
+            onclick="window.location.href='ai-assistant.html'">
+
+            Ask AI Assistant →
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- PRODUCTIVITY -->
+
+<section class="panel productivity-panel">
+
+    <div class="panel-header">
+
+        <div class="panel-title">
+
+            <span class="panel-title-icon">
+                📊
+            </span>
+
+            <h2>
+                Productivity Overview
+            </h2>
+
+        </div>
+
+        <button class="week-btn">
+            This Week ⌄
+        </button>
+
+    </div>
+
+    <div class="bars">
+
+        <div>
+            <i style="height:60%"></i>
+            <small>Mon</small>
+        </div>
+
+        <div>
+            <i style="height:75%"></i>
+            <small>Tue</small>
+        </div>
+
+        <div>
+            <i style="height:50%"></i>
+            <small>Wed</small>
+        </div>
+
+        <div>
+            <i style="height:85%"></i>
+            <small>Thu</small>
+        </div>
+
+        <div>
+            <i style="height:70%"></i>
+            <small>Fri</small>
+        </div>
+
+        <div>
+            <i style="height:90%"></i>
+            <small>Sat</small>
+        </div>
+
+        <div>
+            <i style="height:65%"></i>
+            <small>Sun</small>
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+/* =================================
+   GLOBAL TASK DATA
+================================= */
+
+let tasks = [];
+
+
+/* =================================
+   GET USER ID
+================================= */
+
+function getUserId(){
+
+    let user =
+        JSON.parse(localStorage.getItem("user"));
+
+    return user ? user.id : 1;
+}
+
+
+/* =================================
+   LOAD DASHBOARD
+================================= */
+
+async function loadDashboard(){
+
+    try{
+
+        let user =
+            JSON.parse(localStorage.getItem("user"));
+
+        let userId =
+            user ? user.id : 1;
+
+
+        /* USER NAME */
+
+        if(user){
+
+            document.getElementById("userName").innerText =
+                user.name;
+
+            document.getElementById("topUserName").innerText =
+                user.name;
+
+
+            let parts =
+                user.name.trim().split(" ");
+
+
+            let initials =
+                parts[0].charAt(0).toUpperCase();
+
+
+            if(parts.length > 1){
+
+                initials +=
+                    parts[parts.length - 1]
+                    .charAt(0)
+                    .toUpperCase();
+
+            }
+
+
+            document.getElementById("userLogo").innerText =
+                initials;
+
+        }
+
+
+        /* =================================
+           TASK API
+        ================================= */
+
+        let response =
+            await fetch(
+                "http://127.0.0.1:5000/api/tasks?user_id="
+                + userId
+            );
+
+
+        if(!response.ok){
+
+            throw new Error("Task API failed");
+
+        }
+
+
+        /* IMPORTANT:
+           NO "let" HERE
+        */
+
+        tasks =
+            await response.json();
+
+
+        /* =================================
+           STATS
+        ================================= */
+
+        let total =
+            tasks.length;
+
+
+        let completed =
+            tasks.filter(function(task){
+
+                return Number(task.completed) === 1;
+
+            }).length;
+
+
+        let pending =
+            total - completed;
+
+
+        let score =
+            total > 0
+            ? Math.round((completed / total) * 100)
+            : 0;
+
+
+        document.getElementById("totalTasks").innerText =
+            total;
+
+        document.getElementById("completedTasks").innerText =
+            completed;
+
+        document.getElementById("pendingTasks").innerText =
+            pending;
+
+        document.getElementById("productivityScore").innerText =
+            score + "%";
+
+
+        /* =================================
+           TODAY TASKS
+        ================================= */
+
+        let todayTasks =
+            document.getElementById("todayTasks");
+
+
+        todayTasks.innerHTML = "";
+
+
+        if(tasks.length === 0){
+
+            todayTasks.innerHTML =
+                "<p style='padding:20px;color:#888'>No tasks available. 🎉</p>";
+
+        }
+
+        else{
+
+            tasks.slice(0,5).forEach(function(task){
+
+                let div =
+                    document.createElement("div");
+
+
+                div.className =
+                    "dash-task";
+
+
+                let priority =
+                    String(task.priority || "Medium")
+                    .toLowerCase();
+
+
+                div.innerHTML = `
+
+                    <div class="task-check"></div>
+
+                    <div class="task-info">
+
+                        <b>
+                            ${task.name}
+
+                            <span class="priority ${priority}">
+                                ${task.priority || "Medium"}
+                            </span>
+
+                        </b>
+
+                        <small>
+                            📅 ${task.due_date || "Not set"}
+                        </small>
+
+                    </div>
+
+                    <div class="task-round"></div>
+
+                    <button
+                        class="more-btn"
+                        type="button">
+
+                        •••
+
+                    </button>
+
+                `;
+
+
+                todayTasks.appendChild(div);
+
+            });
+
+        }
+
+
+        /* =================================
+           AI SUGGESTION
+        ================================= */
+
+        let suggestion =
+            document.getElementById("aiSuggestion");
+
+
+        let pendingTasks =
+            tasks.filter(function(task){
+
+                return Number(task.completed) === 0;
+
+            });
+
+
+        let highTask =
+            pendingTasks.find(function(task){
+
+                return String(task.priority || "")
+                    .toLowerCase() === "high";
+
+            });
+
+
+        if(pendingTasks.length === 0){
+
+            suggestion.innerText =
+                "Great! 🎉 All your tasks are completed. Keep up the good work!";
+
+        }
+
+        else if(highTask){
+
+            suggestion.innerText =
+                "You have " +
+                pendingTasks.length +
+                " pending tasks. Start with your high-priority task: " +
+                highTask.name +
+                ".";
+
+        }
+
+        else{
+
+            suggestion.innerText =
+                "You have " +
+                pendingTasks.length +
+                " pending tasks. Start with the most important task first.";
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+        document.getElementById("aiSuggestion").innerText =
+            "⚠️ Unable to load dashboard data.";
+
+    }
+
+}
+
+
+/* =================================
+   NOTIFICATION
+================================= */
+
+function toggleNotifications(){
+
+    let panel =
+        document.getElementById("notificationPanel");
+
+    panel.classList.toggle("show");
+
+}
+
+
+/* =================================
+   ADD TASK
+================================= */
+
+function addTask(){
+
+    window.location.href =
+        "tasks.html";
+
+}
+
+
+/* =================================
+   SMART SEARCH
+================================= */
+
+function searchDashboard(){
+
+    let input =
+        document.getElementById("dashboardSearch");
+
+    let results =
+        document.getElementById("searchResults");
+
+
+    let search =
+        input.value
+        .toLowerCase()
+        .trim();
+
+
+    /* Empty search */
+
+    if(search === ""){
+
+        results.innerHTML = "";
+
+        results.classList.remove("show");
+
+        return;
+
+    }
+
+
+    /* Search actual backend tasks */
+
+    let matchedTasks =
+        tasks.filter(function(task){
+
+            return String(task.name || "")
+                .toLowerCase()
+                .includes(search);
+
+        });
+
+
+    results.innerHTML = "";
+
+
+    /* No result */
+
+    if(matchedTasks.length === 0){
+
+        results.innerHTML = `
+
+            <div class="search-empty">
+
+                🔍 No matching task found
+
+            </div>
+
+        `;
+
+        results.classList.add("show");
+
+        return;
+
+    }
+
+
+    /* Show results */
+
+    matchedTasks
+        .slice(0,5)
+        .forEach(function(task){
+
+            let item =
+                document.createElement("div");
+
+
+            item.className =
+                "search-result";
+
+
+            let status =
+                Number(task.completed) === 1
+                ? "Completed"
+                : "Pending";
+
+
+            item.innerHTML = `
+
+                <div class="search-result-icon">
+                    📋
+                </div>
+
+                <div class="search-result-info">
+
+                    <strong>
+                        ${task.name}
+                    </strong>
+
+                    <small>
+                        ${task.priority || "Medium"} Priority
+                        •
+                        ${status}
+                    </small>
+
+                </div>
+
+            `;
+
+
+            /* Click result */
+
+            item.onclick =
+                function(){
+
+                    window.location.href =
+                        "tasks.html";
+
+                };
+
+
+            results.appendChild(item);
+
+        });
+
+
+    results.classList.add("show");
+
+}
+
+
+/* =================================
+   CLOSE SEARCH WHEN CLICKING OUTSIDE
+================================= */
+
+document.addEventListener(
+    "click",
+    function(event){
+
+        let wrapper =
+            document.querySelector(".search-wrapper");
+
+        let results =
+            document.getElementById("searchResults");
+
+
+        if(
+            wrapper &&
+            !wrapper.contains(event.target)
+        ){
+
+            results.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+/* =================================
+   LOAD
+================================= */
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
+```

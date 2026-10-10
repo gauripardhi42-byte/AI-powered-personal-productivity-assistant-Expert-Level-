@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+<aside class="sidebar">
+
+    <div class="dash-logo">
+        <span>✦</span> AI Productivity
+    </div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <nav>
+
+        <a href="dashboard.html">
+            🏠 <span>Dashboard</span>
+        </a>
+
+        <a href="tasks.html">
+            📋 <span>My Tasks</span>
+        </a>
+
+        <a href="calendar.html">
+            📅 <span>Calendar</span>
+        </a>
+
+        <a href="notes.html">
+            📝 <span>Notes</span>
+        </a>
+
+        <a href="goals.html">
+            🎯 <span>Goals</span>
+        </a>
+
+        <a href="ai-assistant.html" class="active">
+            🤖 <span>AI Assistant</span>
+        </a>
+
+        <a href="analytics.html">
+            📊 <span>Analytics</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <a href="settings.html">
+            ⚙️ <span>Settings</span>
+        </a>
+
+        <a href="index.html" class="logout">
+            🚪 <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+<main class="dashboard-main">
+
+    <header class="dashboard-header">
+        <div>
+            <p class="small-text">Smart Productivity 🤖</p>
+            <h1>AI Assistant</h1>
+        </div>
+    </header>
+
+    <section class="task-section">
+
+        <h2>How can I help you?</h2>
+
+        <div class="task-card">
+
+            <div>
+                <h3>🤖 AI Productivity Suggestion</h3>
+
+                <p id="suggestion">
+                    Loading your tasks...
+                </p>
+            </div>
+
+        </div>
+
+        <div class="task-card">
+
+            <div>
+
+                <h3>💡 Quick Actions</h3>
+                <div class="task-card">
+
+    <div>
+        <h3>🔔 Smart Task Reminder</h3>
+
+        <p id="reminder">
+            Loading reminder...
+        </p>
+    </div>
+
+</div>
+<div class="task-card">
+
+    <div>
+        <h3>🎯 Goal Progress Insight</h3>
+
+        <p id="goalSuggestion">
+            Loading goal insight...
+        </p>
+    </div>
+
+</div>
+<div class="task-card">
+
+    <div>
+        <h3>📅 Upcoming Event</h3>
+
+        <p id="calendarSuggestion">
+            Loading calendar...
+        </p>
+    </div>
+
+</div>
+<div class="task-card">
+
+    <div>
+        <h3>🤖 Your Daily Summary</h3>
+
+        <p id="dailySummary">
+            Loading your daily summary...
+        </p>
+    </div>
+
+</div>
+<div class="task-card">
+
+    <div>
+        <h3>🔥 Today's Priority</h3>
+
+        <p id="priorityTasks">
+            Loading priority tasks...
+        </p>
+    </div>
+
+</div>
+
+                <br>
+
+                <button type="button" onclick="showSuggestion()">
+                    🤖 Get AI Suggestion
+                </button>
+
+                <button type="button" onclick="createPlan()">
+                    📋 Create Daily Plan
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="task-card">
+
+    <h3>💬 Ask AI Assistant</h3>
+
+    <p id="aiReply">
+        Hello! 👋 Ask me anything about your productivity.
+    </p>
+
+    <input
+        type="text"
+        id="aiQuestion"
+        placeholder="Ask something..."
+    >
+
+    <br><br>
+
+    <button type="button" onclick="askAI()">
+        🤖 Ask AI
+    </button>
+
+</div>
+    </section>
+
+</main>
+
+
+<script>
+
+let tasks = [];
+
+function getUserId() {
+    let user = JSON.parse(localStorage.getItem("user"));
+    return user ? user.id : 1;
+}
+
+async function loadTasks() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/tasks?user_id=" + getUserId()
+        );
+
+        tasks = await response.json();
+
+        showSuggestion();
+
+    } catch (error) {
+
+        document.getElementById("suggestion").innerText =
+            "Backend connection failed!";
+
+        console.log(error);
+    }
+}
+
+
+async function showSuggestion() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-suggestion/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        if (data.suggestion) {
+
+            document.getElementById("suggestion").innerText =
+                data.suggestion;
+
+        } else {
+
+            document.getElementById("suggestion").innerText =
+                "🤖 No suggestion available.";
+
+        }
+
+    } catch (error) {
+
+        document.getElementById("suggestion").innerText =
+            "Backend connection failed!";
+
+        console.log(error);
+    }
+}
+
+
+async function createPlan() {
+
+    document.getElementById("suggestion").innerText =
+        "🤖 Creating your daily plan...";
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/tasks?user_id=" + getUserId()
+        );
+
+        let latestTasks = await response.json();
+
+        let pending = latestTasks.filter(function(task) {
+            return Number(task.completed) === 0;
+        });
+
+        if (pending.length === 0) {
+
+            document.getElementById("suggestion").innerText =
+                "🎉 No pending tasks. Enjoy your day!";
+
+            return;
+        }
+
+        let plan = "📋 Today's AI Plan:\n\n";
+
+        pending.slice(0, 3).forEach(function(task, index) {
+
+            plan +=
+                (index + 1) + ". " +
+                task.name + " (" +
+                (task.priority || "Medium") +
+                " Priority)\n";
+
+        });
+
+        plan += "\n☕ Take a short break after completing your tasks.";
+
+        document.getElementById("suggestion").innerText = plan;
+
+    } catch (error) {
+
+        document.getElementById("suggestion").innerText =
+            "⚠️ Unable to create daily plan.";
+
+        console.log(error);
+    }
+}
+
+async function askAI() {
+
+    let question = document.getElementById("aiQuestion").value
+        .toLowerCase();
+
+    let reply = "";
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-suggestion/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        if (question.includes("today") ||
+            question.includes("task")) {
+
+            reply =
+                "🤖 Based on your tasks: " +
+                data.suggestion;
+
+        }
+
+        else if (question.includes("goal")) {
+
+            reply =
+                "🎯 You currently have " +
+                data.goals +
+                " goals. Keep working on them regularly!";
+
+        }
+
+        else if (question.includes("productivity")) {
+
+            reply =
+                "🚀 Productivity Tip: Focus on one important task at a time. " +
+                data.pending_tasks +
+                " tasks are currently pending.";
+
+        }
+
+        else if (question.includes("study")) {
+
+            reply =
+                "📚 Study Tip: Study for 45 minutes, take a 10-minute break, " +
+                "and then continue with your next task.";
+
+        }
+
+        else {
+
+            reply =
+                "🤖 " +
+                data.suggestion +
+                " You have " +
+                data.pending_tasks +
+                " pending tasks.";
+
+        }
+
+    } catch (error) {
+
+        reply = "⚠️ Unable to connect with the AI Assistant.";
+
+        console.log(error);
+    }
+
+    document.getElementById("aiReply").innerText = reply;
+}
+async function loadReminder() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-reminder/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        document.getElementById("reminder").innerText =
+            data.reminder;
+
+    } catch (error) {
+
+        document.getElementById("reminder").innerText =
+            "⚠️ Unable to load reminder.";
+
+        console.log(error);
+    }
+}
+async function loadGoalSuggestion() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-goal/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        document.getElementById("goalSuggestion").innerText =
+            data.goal_suggestion;
+
+    } catch (error) {
+
+        document.getElementById("goalSuggestion").innerText =
+            "⚠️ Unable to load goal insight.";
+
+        console.log(error);
+    }
+}
+
+async function loadCalendarSuggestion() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-calendar/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        document.getElementById("calendarSuggestion").innerText =
+            data.calendar_suggestion;
+
+    } catch (error) {
+
+        document.getElementById("calendarSuggestion").innerText =
+            "⚠️ Unable to load calendar.";
+
+        console.log(error);
+    }
+}
+async function loadDailySummary() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-summary/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        document.getElementById("dailySummary").innerText =
+            data.summary;
+
+    } catch (error) {
+
+        document.getElementById("dailySummary").innerText =
+            "⚠️ Unable to load daily summary.";
+
+        console.log(error);
+    }
+}
+async function loadPriorityTasks() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/ai-priority/" + getUserId()
+        );
+
+        let data = await response.json();
+
+        let box = document.getElementById("priorityTasks");
+
+        if (data.tasks.length === 0) {
+
+            box.innerText = "🎉 No pending tasks!";
+
+            return;
+        }
+
+        let text = "";
+
+        data.tasks.forEach(function(task, index) {
+
+            text +=
+                (index + 1) +
+                ". " +
+                task.name +
+                " — " +
+                task.priority +
+                " Priority\n";
+
+        });
+
+        box.innerText = text;
+
+    } catch (error) {
+
+        document.getElementById("priorityTasks").innerText =
+            "⚠️ Unable to load priority tasks.";
+
+        console.log(error);
+    }
+}
+loadTasks();
+loadReminder();
+loadGoalSuggestion();
+loadCalendarSuggestion();
+loadDailySummary();
+loadPriorityTasks();
+</script>
+
+</body>
+</html> 

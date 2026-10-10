@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - AI Productivity Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-page">
+
+<aside class="sidebar">
+
+    <div class="dash-logo">
+        <span>✦</span> AI Productivity
+    </div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <nav>
+
+        <a href="dashboard.html">
+            🏠 <span>Dashboard</span>
+        </a>
+
+        <a href="tasks.html">
+            📋 <span>My Tasks</span>
+        </a>
+
+        <a href="calendar.html" class="active">
+            📅 <span>Calendar</span>
+        </a>
+
+        <a href="notes.html">
+            📝 <span>Notes</span>
+        </a>
+
+        <a href="goals.html">
+            🎯 <span>Goals</span>
+        </a>
+
+        <a href="ai-assistant.html">
+            🤖 <span>AI Assistant</span>
+        </a>
+
+        <a href="analytics.html">
+            📊 <span>Analytics</span>
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <a href="settings.html">
+            ⚙️ <span>Settings</span>
+        </a>
+
+        <a href="index.html" class="logout">
+            🚪 <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+
+<main class="dashboard-main">
+
+    <header class="dashboard-header">
+
+        <div>
+            <p class="small-text">Schedule Management 📅</p>
+            <h1>My Calendar</h1>
+        </div>
+
+        <button onclick="openEventForm()">＋ Add Event</button>
+
+    </header>
+
+
+    <section class="task-section">
+
+        <h2>Upcoming Events</h2>
+
+        <div id="eventsList"></div>
+
+    </section>
+
+</main>
+
+
+<!-- Add Event Popup -->
+
+<div class="task-modal" id="eventModal">
+
+    <div class="task-form">
+
+        <div class="form-top">
+
+            <div>
+                <p class="small-text">Plan your schedule ✨</p>
+                <h2>Create New Event</h2>
+            </div>
+
+            <button class="close-btn" onclick="closeEventForm()">×</button>
+
+        </div>
+
+
+        <label>Event Name</label>
+
+        <input
+            type="text"
+            id="eventName"
+            placeholder="What is the event?"
+        >
+
+
+        <label>Event Date</label>
+
+        <input
+            type="date"
+            id="eventDate"
+        >
+
+
+        <label>Event Time</label>
+
+        <input
+            type="time"
+            id="eventTime"
+        >
+
+
+        <div class="form-buttons">
+
+            <button class="cancel-btn" onclick="closeEventForm()">
+                Cancel
+            </button>
+
+            <button class="save-btn" onclick="saveEvent()">
+                ✓ Add Event
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let events = [];
+
+
+function getUserId() {
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    return user ? user.id : 1;
+}
+
+
+async function loadEvents() {
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/events?user_id=" + getUserId()
+        );
+
+        events = await response.json();
+
+        showEvents();
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+        console.log(error);
+
+    }
+
+}
+
+
+function showEvents() {
+
+    let eventsList = document.getElementById("eventsList");
+
+    eventsList.innerHTML = "";
+
+
+    if (events.length === 0) {
+
+        eventsList.innerHTML =
+            "<p>No upcoming events. Click ＋ Add Event to create one.</p>";
+
+        return;
+
+    }
+
+
+    events.forEach(function(event, index) {
+
+        let card = document.createElement("div");
+
+        card.className = "task-card";
+
+        card.innerHTML = `
+            <div>
+                <h3>📅 ${event.name}</h3>
+
+                <p>
+                    ${event.event_date} • ${event.event_time}
+                </p>
+            </div>
+
+            <button onclick="deleteEvent(${index})">
+                🗑️
+            </button>
+        `;
+
+        eventsList.appendChild(card);
+
+    });
+
+}
+
+
+/* Open Popup */
+
+function openEventForm() {
+
+    document.getElementById("eventModal").style.display = "flex";
+
+}
+
+
+/* Close Popup */
+
+function closeEventForm() {
+
+    document.getElementById("eventModal").style.display = "none";
+
+}
+
+
+/* Save Event */
+
+async function saveEvent() {
+
+    let name = document.getElementById("eventName").value.trim();
+
+    let date = document.getElementById("eventDate").value;
+
+    let time = document.getElementById("eventTime").value;
+
+
+    if (!name) {
+
+        alert("Please enter event name.");
+
+        return;
+
+    }
+
+
+    if (!date) {
+
+        alert("Please select event date.");
+
+        return;
+
+    }
+
+
+    if (!time) {
+
+        alert("Please select event time.");
+
+        return;
+
+    }
+
+
+    let parts = date.split("-");
+
+    date = parts[2] + "/" + parts[1] + "/" + parts[0];
+
+
+    try {
+
+        let response = await fetch(
+            "http://127.0.0.1:5000/api/events",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    user_id: getUserId(),
+                    name: name,
+                    event_date: date,
+                    event_time: time
+                })
+            }
+        );
+
+
+        let result = await response.json();
+
+
+        if (response.ok) {
+
+            closeEventForm();
+
+            document.getElementById("eventName").value = "";
+
+            document.getElementById("eventDate").value = "";
+
+            document.getElementById("eventTime").value = "";
+
+            loadEvents();
+
+        } else {
+
+            alert(result.message);
+
+        }
+
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+    }
+
+}
+
+
+async function deleteEvent(index) {
+
+    let event = events[index];
+
+
+    try {
+
+        await fetch(
+            "http://127.0.0.1:5000/api/events/" + event.id,
+            {
+                method: "DELETE"
+            }
+        );
+
+        loadEvents();
+
+    } catch (error) {
+
+        alert("Backend connection failed!");
+
+    }
+
+}
+
+
+loadEvents();
+
+</script>
+
+</body>
+
+</html>

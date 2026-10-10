@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Analytics - AI Productivity Assistant</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =================================
+   ANALYTICS STAT CARDS
+================================= */
+
+.analytics-page .stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.analytics-page .stat-card{
+    position:relative;
+    overflow:hidden;
+    background:white;
+    border:1px solid #e9ebf4;
+    border-radius:16px;
+    min-height:145px;
+    padding:18px 20px;
+    box-shadow:0 5px 20px rgba(42,52,100,.04);
+    transition:.25s;
+}
+
+.analytics-page .stat-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(42,52,100,.09);
+}
+
+.analytics-page .stat-icon{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:19px;
+}
+
+.analytics-page .icon-purple{
+    background:#ecebff;
+    color:#685de1;
+}
+
+.analytics-page .icon-green{
+    background:#e3f7ef;
+    color:#3db687;
+}
+
+.analytics-page .icon-orange{
+    background:#fff0dc;
+    color:#e9a34d;
+}
+
+.analytics-page .icon-pink{
+    background:#ffe5ef;
+    color:#ed547e;
+}
+
+.analytics-page .stat-card p{
+    color:#7c829b;
+    font-size:12px;
+    margin:12px 0 6px;
+}
+
+.analytics-page .stat-card h2{
+    margin:0;
+    font-size:27px;
+    color:#121832;
+}
+
+.analytics-page .stat-change{
+    font-size:11px;
+    margin-top:8px;
+    color:#8a91a7;
+}
+
+.analytics-page .stat-change span{
+    color:#52ad86;
+    font-weight:700;
+}
+
+.analytics-page .stat-decoration{
+    position:absolute;
+    width:105px;
+    height:105px;
+    border-radius:50%;
+    right:-35px;
+    bottom:-55px;
+    opacity:.7;
+}
+
+.analytics-page .dec-purple{
+    background:#eeeaff;
+}
+
+.analytics-page .dec-green{
+    background:#e7f8f1;
+}
+
+.analytics-page .dec-orange{
+    background:#fff0dd;
+}
+
+.analytics-page .dec-pink{
+    background:#ffe8f0;
+}
+
+
+/* =================================
+   ANALYTICS HEADER
+================================= */
+
+.analytics-page .analytics-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.analytics-page .analytics-header h1{
+    margin:0;
+    font-size:28px;
+    color:#20233d;
+}
+
+.analytics-page .analytics-header .small-text{
+    margin-bottom:6px;
+}
+
+
+/* =================================
+   USER LOGO
+================================= */
+
+.analytics-page .user-circle{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#6358df;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    box-shadow:0 5px 15px rgba(99,88,223,.22);
+}
+
+
+/* =================================
+   PRODUCTIVITY CARD
+================================= */
+
+.analytics-page .productivity{
+    min-height:270px;
+    margin-bottom:20px;
+}
+
+.analytics-page .card-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.analytics-page .card-heading h2{
+    margin:0;
+    color:#20233d;
+}
+
+.analytics-page .card-heading span{
+    color:#7d8399;
+    font-size:12px;
+}
+
+
+/* BARS */
+
+.analytics-page .bars{
+    height:180px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:100px;
+    border-bottom:1px solid #edf0f6;
+}
+
+.analytics-page .bars > div{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    gap:9px;
+}
+
+.analytics-page .bars i{
+    display:block;
+    width:65px;
+    min-height:5px;
+    border-radius:9px 9px 3px 3px;
+    background:linear-gradient(
+        to top,
+        #6258df,
+        #a9a1ff
+    );
+    transition:.5s;
+}
+
+.analytics-page .bars > div:nth-child(2) i{
+    background:linear-gradient(
+        to top,
+        #f0a957,
+        #ffd69b
+    );
+}
+
+.analytics-page .bars small{
+    color:#858ba0;
+    font-size:11px;
+}
+
+
+/* =================================
+   AI INSIGHT
+================================= */
+
+.analytics-page .analytics-insight{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:24px;
+    margin-top:20px;
+    border-left:4px solid #6c63ff;
+}
+
+.analytics-page .analytics-insight .ai-icon{
+    width:55px;
+    height:55px;
+    flex-shrink:0;
+    border-radius:15px;
+    background:#f0edff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:25px;
+}
+
+.analytics-page .analytics-insight h2{
+    margin:0 0 7px;
+    color:#29263d;
+}
+
+.analytics-page .analytics-insight p{
+    margin:0;
+    color:#77758a;
+    line-height:1.6;
+    font-size:14px;
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media(max-width:1000px){
+
+    .analytics-page .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .analytics-page .dashboard-main{
+        margin-left:70px;
+        width:calc(100% - 70px);
+    }
+
+    .analytics-page .bars{
+        gap:60px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .analytics-page .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .analytics-page .stat-card{
+        min-height:125px;
+        padding:14px;
+    }
+
+    .analytics-page .stat-card h2{
+        font-size:23px;
+    }
+
+    .analytics-page .bars{
+        gap:35px;
+    }
+
+    .analytics-page .bars i{
+        width:45px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body class="dashboard-page analytics-page">
+
+
+<!-- =================================
+     SIDEBAR
+================================= -->
+
+<aside class="sidebar">
+
+    <div class="dash-logo">
+        <span>✦</span> AI Productivity
+    </div>
+
+
+    <div class="menu-title">
+        MAIN MENU
+    </div>
+
+
+    <nav>
+
+        <a href="dashboard.html">
+            🏠 <span>Dashboard</span>
+        </a>
+
+        <a href="tasks.html">
+            📋 <span>My Tasks</span>
+        </a>
+
+        <a href="calendar.html">
+            📅 <span>Calendar</span>
+        </a>
+
+        <a href="notes.html">
+            📝 <span>Notes</span>
+        </a>
+
+        <a href="goals.html">
+            🎯 <span>Goals</span>
+        </a>
+
+        <a href="ai-assistant.html">
+            🤖 <span>AI Assistant</span>
+        </a>
+
+        <a href="analytics.html" class="active">
+            📊 <span>Analytics</span>
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="menu-title">
+            ACCOUNT
+        </div>
+
+        <a href="settings.html">
+            ⚙️ <span>Settings</span>
+        </a>
+
+        <a href="index.html" class="logout">
+            🚪 <span>Logout</span>
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =================================
+     MAIN
+================================= -->
+
+<main class="dashboard-main">
+
+
+<!-- HEADER -->
+
+<header class="analytics-header">
+
+    <div>
+
+        <p class="small-text">
+            Track Your Progress 📈
+        </p>
+
+        <h1>
+            Productivity Analytics
+        </h1>
+
+    </div>
+
+
+    <div class="user-circle" id="userLogo">
+        G
+    </div>
+
+</header>
+
+
+<!-- =================================
+     FOUR STAT BOXES
+================================= -->
+
+<section class="stats">
+<!-- TOTAL TASKS -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-purple">
+            📋
+        </div>
+
+        <p>
+            Total Tasks
+        </p>
+
+        <h2 id="totalTasks">
+            0
+        </h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-purple"></div>
+
+    </div>
+
+    <!-- COMPLETED -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-green">
+            ✓
+        </div>
+
+        <p>
+            Completed
+        </p>
+
+        <h2 id="completedTasks">
+            0
+        </h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-green"></div>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-orange">
+            ⏳
+        </div>
+
+        <p>
+            Pending
+        </p>
+
+        <h2 id="pendingTasks">
+            0
+        </h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-orange"></div>
+
+    </div>
+
+
+    <!-- PRODUCTIVITY -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon icon-pink">
+            ⚡
+        </div>
+
+        <p>
+            Productivity
+        </p>
+
+        <h2 id="productivityScore">
+            0%
+        </h2>
+
+        <div class="stat-change">
+            ↑ <span>0%</span> from last week
+        </div>
+
+        <div class="stat-decoration dec-pink"></div>
+
+    </div>
+
+<div class="stat-card">
+
+    <div class="stat-icon icon-purple">
+        🎯
+    </div>
+
+    <p>Goals Achieved</p>
+
+    <h2 id="goalsAchieved">
+        0
+    </h2>
+
+    <div class="stat-change">
+        ↑ <span>0%</span> from last week
+    </div>
+
+    <div class="stat-decoration dec-purple"></div>
+
+</div>
+</section>
+
+
+<!-- =================================
+     PRODUCTIVITY OVERVIEW
+================================= -->
+
+<section class="dash-card productivity">
+
+    <div class="card-heading">
+
+        <h2>
+            Productivity Overview
+        </h2>
+
+        <span>
+            Based on your tasks
+        </span>
+
+    </div>
+
+
+    <div class="bars">
+
+        <div>
+
+            <i
+                id="completedBar"
+                style="height:0%">
+            </i>
+
+            <small>
+                Completed
+            </small>
+
+        </div>
+
+
+        <div>
+
+            <i
+                id="pendingBar"
+                style="height:0%">
+            </i>
+
+            <small>
+                Pending
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     AI INSIGHT
+================================= -->
+
+<section class="dash-card analytics-insight">
+
+
+    <div class="ai-icon">
+        🤖
+    </div>
+
+
+    <div>
+
+        <h2>
+            AI Productivity Insight
+        </h2>
+
+        <p id="insight">
+            Loading your productivity insight...
+        </p>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =================================
+     JAVASCRIPT
+================================= -->
+
+<script>
+
+
+/* USER ID */
+
+function getUserId(){
+
+    let user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    return user ? user.id : 1;
+
+}
+
+
+/* LOAD USER */
+
+let user =
+    JSON.parse(
+        localStorage.getItem("user")
+    );
+
+
+if(user){
+
+    let parts =
+        user.name.trim().split(" ");
+
+
+    let initials =
+        parts[0]
+        .charAt(0)
+        .toUpperCase();
+
+
+    if(parts.length > 1){
+
+        initials +=
+            parts[parts.length - 1]
+            .charAt(0)
+            .toUpperCase();
+
+    }
+
+
+    document.getElementById("userLogo").innerText =
+        initials;
+
+}
+
+
+/* ANALYTICS */
+
+async function loadAnalytics(){
+
+    try{
+
+
+        let userId =
+            getUserId();
+
+
+        /* TASKS */
+
+        let taskResponse =
+            await fetch(
+                "http://127.0.0.1:5000/api/tasks?user_id="
+                + userId
+            );
+
+
+        let tasks =
+            await taskResponse.json();
+
+
+        /* GOALS */
+
+        let goalResponse =
+            await fetch(
+                "http://127.0.0.1:5000/api/goals?user_id="
+                + userId
+            );
+
+
+        let goals =
+            await goalResponse.json();
+
+
+        /* CALCULATIONS */
+
+        let total =
+            tasks.length;
+
+
+        let completed =
+            tasks.filter(function(task){
+
+                return Number(task.completed) === 1;
+
+            }).length;
+
+
+        let pending =
+            total - completed;
+
+
+        let score =
+            total > 0
+            ? Math.round(
+                (completed / total) * 100
+            )
+            : 0;
+
+
+        /* DISPLAY */
+
+        document.getElementById(
+            "totalTasks"
+        ).innerText =
+            total;
+
+
+        document.getElementById(
+            "completedTasks"
+        ).innerText =
+            completed;
+
+
+        document.getElementById(
+            "pendingTasks"
+        ).innerText =
+            pending;
+
+
+        document.getElementById(
+            "productivityScore"
+        ).innerText =
+            score + "%";
+
+
+        /* BARS */
+
+        document.getElementById(
+            "completedBar"
+        ).style.height =
+            (
+                total > 0
+                ? (completed / total) * 100
+                : 0
+            ) + "%";
+
+
+        document.getElementById(
+            "pendingBar"
+        ).style.height =
+            (
+                total > 0
+                ? (pending / total) * 100
+                : 0
+            ) + "%";
+
+
+        /* AI INSIGHT */
+
+        let insight =
+            document.getElementById(
+                "insight"
+            );
+
+
+        if(total === 0){
+
+            insight.innerText =
+                "No tasks available. Add some tasks to start tracking your productivity.";
+
+        }
+
+        else if(score === 100){
+
+            insight.innerText =
+                "Excellent work! 🎉 You have completed all your tasks. Keep maintaining this productivity.";
+
+        }
+
+        else if(score >= 60){
+
+            insight.innerText =
+                "Good progress! 👍 Your productivity is above average. Try completing your remaining tasks.";
+
+        }
+
+        else{
+
+            insight.innerText =
+                "You can improve your productivity. Focus on high-priority tasks and complete them one by one.";
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+
+        document.getElementById(
+            "insight"
+        ).innerText =
+            "Backend connection failed!";
+
+    }
+
+}
+
+
+loadAnalytics();
+
+</script>
+
+
+</body>
+</html>
