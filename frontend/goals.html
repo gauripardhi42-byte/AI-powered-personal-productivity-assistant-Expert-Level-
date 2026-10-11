@@ -152,7 +152,7 @@ async function loadGoals() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/goals?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/goals?user_id=" + getUserId()
         );
 
         goals = await response.json();
@@ -265,7 +265,7 @@ async function saveGoal() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/goals",
+            "https://ai-powered-personal-productivity.onrender.com/api/goals",
             {
                 method: "POST",
 
@@ -338,7 +338,7 @@ async function updateGoal(index, progress) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/goals/" + goal.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/goals/" + goal.id,
             {
                 method: "PUT",
 
@@ -373,7 +373,7 @@ async function deleteGoal(index) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/goals/" + goal.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/goals/" + goal.id,
             {
                 method: "DELETE"
             }

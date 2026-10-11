@@ -891,7 +891,7 @@ async function loadStats() {
 
         let taskResponse =
             await fetch(
-                "http://127.0.0.1:5000/api/tasks?user_id="
+                "https://ai-powered-personal-productivity.onrender.com/api/tasks?user_id="
                 + user.id
             );
 
@@ -902,7 +902,7 @@ async function loadStats() {
 
         let goalResponse =
             await fetch(
-                "http://127.0.0.1:5000/api/goals?user_id="
+                "https://ai-powered-personal-productivity.onrender.com/api/goals?user_id="
                 + user.id
             );
 

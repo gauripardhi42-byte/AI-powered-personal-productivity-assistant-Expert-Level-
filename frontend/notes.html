@@ -160,7 +160,7 @@ async function loadNotes() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/notes?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/notes?user_id=" + getUserId()
         );
 
         notes = await response.json();
@@ -271,7 +271,7 @@ async function saveNote() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/notes",
+            "https://ai-powered-personal-productivity.onrender.com/api/notes",
             {
                 method: "POST",
 
@@ -327,7 +327,7 @@ async function deleteNote(index) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/notes/" + note.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/notes/" + note.id,
             {
                 method: "DELETE"
             }

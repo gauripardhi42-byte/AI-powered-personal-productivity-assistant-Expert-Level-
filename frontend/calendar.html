@@ -170,7 +170,7 @@ async function loadEvents() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/events?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/events?user_id=" + getUserId()
         );
 
         events = await response.json();
@@ -296,7 +296,7 @@ async function saveEvent() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/events",
+            "https://ai-powered-personal-productivity.onrender.com/api/events",
             {
                 method: "POST",
 
@@ -353,7 +353,7 @@ async function deleteEvent(index) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/events/" + event.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/events/" + event.id,
             {
                 method: "DELETE"
             }

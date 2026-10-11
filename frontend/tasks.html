@@ -163,7 +163,7 @@ async function loadTasks() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/tasks?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks?user_id=" + getUserId()
         );
 
         tasks = await response.json();
@@ -269,7 +269,7 @@ async function saveTask() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/tasks",
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks",
             {
                 method: "POST",
 
@@ -320,7 +320,7 @@ async function completeTask(index) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/tasks/" + task.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks/" + task.id,
             {
                 method: "PUT",
 
@@ -353,7 +353,7 @@ async function deleteTask(index) {
     try {
 
         await fetch(
-            "http://127.0.0.1:5000/api/tasks/" + task.id,
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks/" + task.id,
             {
                 method: "DELETE"
             }

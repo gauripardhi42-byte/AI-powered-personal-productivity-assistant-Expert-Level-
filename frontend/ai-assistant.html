@@ -206,7 +206,7 @@ async function loadTasks() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/tasks?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks?user_id=" + getUserId()
         );
 
         tasks = await response.json();
@@ -228,7 +228,7 @@ async function showSuggestion() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-suggestion/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-suggestion/" + getUserId()
         );
 
         let data = await response.json();
@@ -263,7 +263,7 @@ async function createPlan() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/tasks?user_id=" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/tasks?user_id=" + getUserId()
         );
 
         let latestTasks = await response.json();
@@ -315,7 +315,7 @@ async function askAI() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-suggestion/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-suggestion/" + getUserId()
         );
 
         let data = await response.json();
@@ -380,7 +380,7 @@ async function loadReminder() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-reminder/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-reminder/" + getUserId()
         );
 
         let data = await response.json();
@@ -401,7 +401,7 @@ async function loadGoalSuggestion() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-goal/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-goal/" + getUserId()
         );
 
         let data = await response.json();
@@ -423,7 +423,7 @@ async function loadCalendarSuggestion() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-calendar/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-calendar/" + getUserId()
         );
 
         let data = await response.json();
@@ -444,7 +444,7 @@ async function loadDailySummary() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-summary/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-summary/" + getUserId()
         );
 
         let data = await response.json();
@@ -465,7 +465,7 @@ async function loadPriorityTasks() {
     try {
 
         let response = await fetch(
-            "http://127.0.0.1:5000/api/ai-priority/" + getUserId()
+            "https://ai-powered-personal-productivity.onrender.com/api/ai-priority/" + getUserId()
         );
 
         let data = await response.json();
